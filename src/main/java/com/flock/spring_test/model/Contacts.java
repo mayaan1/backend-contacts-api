@@ -2,8 +2,8 @@ package com.flock.spring_test.model;
 
 public class Contacts {
     String uid;
-    String contact_id;
-    String contact_name;
+    String contactUID;
+    String contactName;
     Integer score;
 
     public Contacts() {
@@ -12,8 +12,8 @@ public class Contacts {
 
     public Contacts(String uid, String contact_id, String contact_name, Integer score) {
         this.uid = uid;
-        this.contact_id = contact_id;
-        this.contact_name = contact_name;
+        this.contactUID = contact_id;
+        this.contactName = contact_name;
         this.score = score;
     }
 
@@ -22,28 +22,28 @@ public class Contacts {
         return uid;
     }
 
-    public String getContact_name() {
-        return contact_name;
+    public String getContactName() {
+        return contactName;
     }
 
     public Integer getScore() {
         return score;
     }
 
-    public String getContact_id() {
-        return contact_id;
+    public String getContactUID() {
+        return contactUID;
     }
 
-    public void setContact_name(String contact_name) {
-        this.contact_name = contact_name;
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
     }
 
-    public void setContact_id(String contact_id) {
-        this.contact_id = contact_id;
+    public void setContactUID(String contactUID) {
+        this.contactUID = contactUID;
     }
 
     public void setScore(Integer score) {

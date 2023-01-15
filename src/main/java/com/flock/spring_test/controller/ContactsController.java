@@ -18,7 +18,9 @@ public class ContactsController {
     JdbcTemplate jdbcTemplate;
 
     @PostMapping("/add")
-    public Contacts addUser(@RequestBody Contacts contacts) {
+    public Contacts addUser(@RequestParam String token, @RequestBody Contacts contacts) {
+        contacts.setUid(token);
+        contacts.setScore(0);
         return contactsService.addContact(contacts);
     }
 
@@ -33,7 +35,9 @@ public class ContactsController {
     }
 
     @GetMapping("/showContacts")
-    List<Contacts> showContactsForUID(@RequestBody Contacts contacts) {
-        return contactsService.showContactsForUID(contacts);
+    List<Contacts> showContactsForUID(@RequestParam String token) {
+        Contacts contact = new Contacts();
+        contact.setUid(token);
+        return contactsService.showContactsForUID(contact);
     }
 }

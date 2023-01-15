@@ -16,17 +16,6 @@ public class UserLoginController {
     JdbcTemplate jdbcTemplate;
     @Autowired
     UserLoginService userLogin;
-    @RequestMapping({"/user"})
-    public String helloUser(){
-        return "Hello User";
-    }
-
-    @RequestMapping({"/admin"})
-    public String helloAdmin(){
-        String sql = "insert into users values (1,9899,\"Add\",\"a@gmail.com\",\"A\")";
-        jdbcTemplate.update(sql);
-        return "Hello Admin";
-    }
 
     @GetMapping({"/getAllUserCred"})
     public List<UserLoginCred> getAllUserLoginCred() {
