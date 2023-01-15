@@ -19,6 +19,9 @@ public class UserLoginService {
         String passwordInDB = userLoginRepo.getPasswordForUsername(username);
         return passwordInDB.equals(password);
     }
+    public boolean authenticateUser(String token) {
+        return userLoginRepo.isTokenPresent(token);
+    }
     public List<UserLoginCred> getAllUsers() {
         return userLoginRepo.getAllUsers();
     }

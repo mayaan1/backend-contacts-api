@@ -16,12 +16,15 @@ public class RequestHandleInterceptor extends HandlerInterceptorAdapter {
     UserLoginService userService;
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
-        if(req.getHeader("username") != null && req.getHeader("password") != null) {
-            if (userService.authenticateUser(req.getHeader("username"), req.getHeader("password")))
+        if(req.getParameter("token") != null )  {
+            if (userService.authenticateUser(req.getParameter("token"))) {
                 return super.preHandle(req, res, handler);
+            }
         }
-        if(false) {
-            // token
+        if(req.getHeader("username") != null && req.getHeader("password") != null) {
+            if (userService.authenticateUser(req.getHeader("username"), req.getHeader("password"))) {
+                return super.preHandle(req, res, handler);
+            }
         }
         throw new Exception("\n\nNot Allowed!\nEnter Valid credentials!!\n\n");
     }

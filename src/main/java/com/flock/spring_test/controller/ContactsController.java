@@ -23,7 +23,7 @@ public class ContactsController {
     }
 
     @GetMapping("/showAll")
-    List<Contacts> showAll(@RequestBody Contacts contacts) {
+    List<Contacts> showAll(@RequestParam String token) {
         return contactsService.showAllContacts();
     }
 

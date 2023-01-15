@@ -53,4 +53,10 @@ public class UserLoginRepo {
         UserLoginCred user = jdbcTemplate.queryForObject(sql,new Object[]{username},USER_RM);
         return user.getPassword();
     }
+
+    public boolean isTokenPresent(String token) {
+        String sql = "SELECT count(*) FROM UserLoginCred WHERE token = ?";
+        int count = jdbcTemplate.queryForObject(sql, new Object[] { token }, Integer.class);
+        return count == 1;
+    }
 }
