@@ -16,8 +16,8 @@ public class ContactsService {
         return contactRepo.addContact(contacts);
     }
 
-    public List<Contacts> showAllContacts() {
-        return contactRepo.showAllContacts();
+    public List<Contacts> showAllContacts(String uid) {
+        return contactRepo.showAllContacts(uid);
     }
 
     public List<Contacts> showContactsForUID(Contacts contact) {

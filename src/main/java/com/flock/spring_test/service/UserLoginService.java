@@ -38,6 +38,10 @@ public class UserLoginService {
         return userLoginRepo.getUserToken(user);
     }
 
+    public String getUserToken(String username, String password) {
+        return userLoginRepo.getUserToken(username, password).getToken();
+    }
+
     public String getPasswordForUsername(String username) {
         return userLoginRepo.getPasswordForUsername(username);
     }

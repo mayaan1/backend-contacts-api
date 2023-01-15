@@ -46,8 +46,12 @@ public class UserLoginRepo {
 
     public UserLoginCred getUserToken(UserLoginCred user) {
         String sql = "SELECT * FROM UserLoginCred Where username = ? and password = ?";
-        System.out.println(sql);
         return jdbcTemplate.queryForObject(sql,new Object[]{user.getUsername(), user.getPassword()},USER_RM);
+    }
+
+    public UserLoginCred getUserToken(String username, String password) {
+        String sql = "SELECT * FROM UserLoginCred Where username = ? and password = ?";
+        return jdbcTemplate.queryForObject(sql,new Object[]{username, password},USER_RM);
     }
 
     public String getPasswordForUsername(String username) {

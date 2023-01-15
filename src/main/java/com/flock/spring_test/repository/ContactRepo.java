@@ -22,14 +22,14 @@ public class ContactRepo {
         return contact;
     }
 
-    public List<Contacts> showAllContacts() {
-        return jdbcTemplate.query("SELECT * FROM contacts", (rs, rowNum) ->
+    public List<Contacts> showAllContacts(String uid) {
+        return jdbcTemplate.query("SELECT * FROM contacts where uid = ?", (rs, rowNum) ->
                 new Contacts(
                         rs.getString("uid"),
-                        rs.getString("contactid"),
+                        rs.getString("contactuid"),
                         rs.getString("contactname"),
                         rs.getInt("score")
-                ));
+                ), uid);
     }
 
     public List<Contacts> showContactsForUID(Contacts contact) {
