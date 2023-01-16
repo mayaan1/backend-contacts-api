@@ -2,7 +2,7 @@ package com.flock.spring_test.model;
 
 public class UserContact {
         String uid;
-        String mobile_no;
+        String mobileNo;
         String address;
         String email;
         String name;
@@ -11,9 +11,9 @@ public class UserContact {
 
         }
 
-        public UserContact(String uid, String mobile_no, String address, String email, String name ) {
+        public UserContact(String uid, String mobileNo, String address, String email, String name ) {
             this.uid = uid;
-            this.mobile_no = mobile_no;
+            this.mobileNo = mobileNo;
             this.address = address;
             this.email = email;
             this.name = name;
@@ -27,8 +27,8 @@ public class UserContact {
             return email;
         }
 
-        public String getMobile_no() {
-            return mobile_no;
+        public String getMobileNo() {
+            return mobileNo;
         }
 
         public String getName() {
@@ -51,8 +51,8 @@ public class UserContact {
             this.email = email;
         }
 
-        public void setMobile_no(String mobile_no) {
-            this.mobile_no = mobile_no;
+        public void setMobileNo(String mobileNo) {
+            this.mobileNo = mobileNo;
         }
 
         public void setUid(String uid) {

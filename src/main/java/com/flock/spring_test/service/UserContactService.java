@@ -24,4 +24,19 @@ public class UserContactService {
         return userContactRepo.deleteUserID(user);
     }
 
+    public void updateUserAddress(String address, String uid) {
+        userContactRepo.updateUserAddress(address, uid);
+    }
+
+    public void updateUserMobileNo(String mobileNo, String uid) {
+        userContactRepo.updateUserMobileNo(mobileNo, uid);
+    }
+
+    public void updateUserName(String name, String uid) {
+        userContactRepo.updateUserName(name, uid);
+    }
+
+    public void updateUserEmail(String email, String uid) {
+        userContactRepo.updateUserEmail(email, uid);
+    }
 }

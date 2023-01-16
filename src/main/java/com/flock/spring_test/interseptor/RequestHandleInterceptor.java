@@ -26,6 +26,7 @@ public class RequestHandleInterceptor extends HandlerInterceptorAdapter {
                 return super.preHandle(req, res, handler);
             }
         }
+
         throw new Exception("\n\nNot Allowed!\nEnter Valid credentials!!\n\n");
     }
 

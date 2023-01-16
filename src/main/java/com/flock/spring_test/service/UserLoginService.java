@@ -3,12 +3,9 @@ package com.flock.spring_test.service;
 import com.flock.spring_test.model.UserLoginCred;
 import com.flock.spring_test.repository.UserLoginRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.flock.spring_test.mappers.UserLoginCredMapper.USER_RM;
 
 @Service
 public class UserLoginService {
@@ -46,4 +43,7 @@ public class UserLoginService {
         return userLoginRepo.getPasswordForUsername(username);
     }
 
+    public String getUsernameFromToken(String token) {
+        return userLoginRepo.getUsernameFromToken(token);
+    }
 }

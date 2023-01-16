@@ -4,7 +4,6 @@ import com.flock.spring_test.model.Contacts;
 import com.flock.spring_test.service.ContactsService;
 import com.flock.spring_test.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,37 +18,50 @@ public class ContactsController {
     @Autowired
     UserLoginService userLoginService;
 
-
     @PostMapping("/add")
     public Contacts addUser(@RequestParam Map<String,String> param,
                             @RequestHeader Map<String,String> header,
                             @RequestBody Contacts contacts) {
-        String token = param.get("token");
-        if(token == null )
-            token = String.valueOf(userLoginService.getUserToken(header.get("username"), header.get("password")));
-        contacts.setUid(token);
+        String username = header.get("username");
+        if( username == null ) username = userLoginService.getUsernameFromToken(param.get("token"));
+        contacts.setUid(username);
         contacts.setScore(0);
+
         return contactsService.addContact(contacts);
     }
 
     @GetMapping("/showAll")
     List<Contacts> showAll(@RequestParam Map<String,String> param,
                            @RequestHeader Map<String,String> header) {
-        String token = param.get("token");
-        if(token == null )
-            token = String.valueOf(userLoginService.getUserToken(header.get("username"), header.get("password")));
-        return contactsService.showAllContacts(token);
+        String username = header.get("username");
+        if( username == null ) username = userLoginService.getUsernameFromToken(param.get("token"));
+
+        return contactsService.showAllContacts(username);
+    }
+
+    @GetMapping("/showAllContactsByScore")
+    List<Contacts> showAllContactsByScore(@RequestParam Map<String,String> param,
+                           @RequestHeader Map<String,String> header) {
+        String username = header.get("username");
+        if( username == null ) username = userLoginService.getUsernameFromToken(param.get("token"));
+
+        return contactsService.showAllContactsByScore(username);
     }
 
     @GetMapping("/lookUp")
-    List<Contacts> lookUp(@RequestParam String lookUpText ) {
-        return contactsService.lookUp(lookUpText);
+    List<Contacts> lookUp(@RequestParam Map<String,String> param,
+                          @RequestHeader Map<String,String> header) {
+        String username = header.get("username");
+        if( username == null ) username = userLoginService.getUsernameFromToken(param.get("token"));
+        return contactsService.lookUp(param.get("lookUpText"), username);
     }
 
-    @GetMapping("/showContacts")
-    List<Contacts> showContactsForUID(@RequestParam String token) {
-        Contacts contact = new Contacts();
-        contact.setUid(token);
-        return contactsService.showContactsForUID(contact);
+    @GetMapping("/viewSingleContact")
+    Contacts viewContact(@RequestParam Map<String,String> param,
+                         @RequestHeader Map<String,String> header) {
+        String username = header.get("username");
+        if( username == null ) username = userLoginService.getUsernameFromToken(param.get("token"));
+
+        return contactsService.viewSingleContact(param.get("contactUID"), username);
     }
 }

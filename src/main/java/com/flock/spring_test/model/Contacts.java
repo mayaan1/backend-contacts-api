@@ -10,10 +10,10 @@ public class Contacts {
 
     }
 
-    public Contacts(String uid, String contact_id, String contact_name, Integer score) {
+    public Contacts(String uid, String contactUID, String contactName, Integer score) {
         this.uid = uid;
-        this.contactUID = contact_id;
-        this.contactName = contact_name;
+        this.contactUID = contactUID;
+        this.contactName = contactName;
         this.score = score;
     }
 

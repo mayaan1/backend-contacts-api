@@ -11,8 +11,6 @@ import java.util.List;
 
 @Repository
 public class UserContactRepo {
-
-    UserLoginCredMapper userLoginCredMapper;
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -27,9 +25,9 @@ public class UserContactRepo {
     }
 
     public UserContact addUser(UserContact user) {
-        String sql = "Insert into Users (uid,mobile_no,address,email,name) Values(?,?,?,?,?)";
+        String sql = "Insert into Users (uid,mobileNo,address,email,name) Values(?,?,?,?,?)";
         try {
-            jdbcTemplate.update(sql, user.getUid(),user.getMobile_no(), user.getAddress(), user.getEmail(), user.getName());
+            jdbcTemplate.update(sql, user.getUid(),user.getMobileNo(), user.getAddress(), user.getEmail(), user.getName());
         } catch (DuplicateKeyException ex){
             System.out.println("Duplicate Key!");
         }
@@ -40,10 +38,30 @@ public class UserContactRepo {
         return jdbcTemplate.query("SELECT * FROM users", (rs, rowNum) ->
                 new UserContact(
                         rs.getString("uid"),
-                        rs.getString("mobile_no"),
+                        rs.getString("mobileNo"),
                         rs.getString("address"),
                         rs.getString("email"),
                         rs.getString("name")
                 ));
+    }
+
+    public void updateUserAddress(String address, String uid) {
+        String sql = "Update USERS set Address = ? Where uid = ?";
+        jdbcTemplate.update(sql, address, uid);
+    }
+
+    public void updateUserMobileNo(String mobileNo, String uid) {
+        String sql = "Update USERS set MobileNo = ? Where uid = ?";
+        jdbcTemplate.update(sql, mobileNo, uid);
+    }
+
+    public void updateUserName(String name, String uid) {
+        String sql = "Update USERS set Name = ? Where uid = ?";
+        jdbcTemplate.update(sql, name, uid);
+    }
+
+    public void updateUserEmail(String email, String uid) {
+        String sql = "Update USERS set email = ? Where uid = ?";
+        jdbcTemplate.update(sql, email, uid);
     }
 }

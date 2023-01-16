@@ -27,8 +27,8 @@ public class UserLoginRepo {
             user.setToken(user.generateToken());
             jdbcTemplate.update(sql, user.getUsername(),user.getPassword(), user.getToken());
             String userCreate = "Insert into Users (uid) Values(?)";
-            jdbcTemplate.update(userCreate, user.getToken());
-        } catch (DuplicateKeyException ex) {
+            jdbcTemplate.update(userCreate, user.getUsername());
+        } catch (Exception ex) {
             System.out.println("Duplicate Key!");
         }
         return user;
@@ -66,4 +66,10 @@ public class UserLoginRepo {
         return count == 1;
     }
 
+    public String getUsernameFromToken(String token) {
+        String sql = "SELECT * FROM UserLoginCred Where token = ?";
+        UserLoginCred user = jdbcTemplate.queryForObject(sql,new Object[]{token},USER_RM);
+        return user.getUsername();
+
+    }
 }

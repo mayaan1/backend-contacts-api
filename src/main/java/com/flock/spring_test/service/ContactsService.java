@@ -1,7 +1,6 @@
 package com.flock.spring_test.service;
 
 import com.flock.spring_test.model.Contacts;
-import com.flock.spring_test.model.UserContact;
 import com.flock.spring_test.repository.ContactRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,15 @@ public class ContactsService {
         return contactRepo.showContactsForUID(contact);
     }
 
-    public List<Contacts> lookUp(String lookUpText) {
-        return contactRepo.lookUp(lookUpText);
+    public List<Contacts> lookUp(String lookUpText, String Uid) {
+        return contactRepo.lookUp(lookUpText, Uid);
+    }
+
+    public Contacts viewSingleContact(String contactUID, String Uid) {
+        return contactRepo.viewSingleContact(contactUID, Uid);
+    }
+
+    public List<Contacts> showAllContactsByScore(String uid) {
+        return contactRepo.showAllContactsByScore(uid);
     }
 }
