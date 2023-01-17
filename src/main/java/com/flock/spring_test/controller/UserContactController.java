@@ -24,11 +24,11 @@ public class UserContactController {
                                      @RequestBody UserContact user) {
         String username = header.get("username");
         if( username == null ) username = userLoginService.getUsernameFromToken(param.get("token"));
-
-        if( user.getAddress() != null ) userContactService.updateUserAddress(user.getAddress(), username);
-        if( user.getMobileNo() != null ) userContactService.updateUserMobileNo(user.getMobileNo(), username);
-        if( user.getName() != null ) userContactService.updateUserName(user.getName(), username);
-        if( user.getEmail() != null ) userContactService.updateUserEmail(user.getEmail(), username);
+        user.setUid(username);
+        if( user.getAddress() != null ) userContactService.updateUserAddress(user);
+        if( user.getMobileNo() != null ) userContactService.updateUserMobileNo(user);
+        if( user.getName() != null ) userContactService.updateUserName(user);
+        if( user.getEmail() != null ) userContactService.updateUserEmail(user);
         return user;
     }
 
