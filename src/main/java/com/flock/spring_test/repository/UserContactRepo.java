@@ -12,19 +12,16 @@ import java.util.List;
 
 import static com.flock.spring_test.mappers.Mappers.getUserContactMap;
 import static com.flock.spring_test.mappers.UserContactMapper.USER_CONTACT_RM;
+import static com.flock.spring_test.repository.sqlConstants.UserContact.*;
 
 @Repository
 public class UserContactRepo {
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public UserContact deleteUserID(UserContact user) {
-        String sql = "Delete from users where uid=:uid";
         try {
-            namedParameterJdbcTemplate.update(sql, getUserContactMap(user));
+            namedParameterJdbcTemplate.update(DELETE_USERS_UID, getUserContactMap(user));
         } catch (Exception ex) {
             System.out.println("No user found");
         }
@@ -32,9 +29,8 @@ public class UserContactRepo {
     }
 
     public UserContact addUser(UserContact user) {
-        String sql = "Insert into Users (uid,mobileNo,address,email,name) Values(:uid,:mobileNo,:address,:email,:name)";
         try {
-            namedParameterJdbcTemplate.update(sql, getUserContactMap(user));
+            namedParameterJdbcTemplate.update(INSERT_INTO_USERS, getUserContactMap(user));
         } catch (DuplicateKeyException ex){
             System.out.println("Duplicate Key!");
         }
@@ -42,26 +38,22 @@ public class UserContactRepo {
     }
 
     public List<UserContact> getAllUsers() {
-        return namedParameterJdbcTemplate.query("SELECT * FROM users", USER_CONTACT_RM);
+        return namedParameterJdbcTemplate.query(SELECT_USERS, USER_CONTACT_RM);
     }
 
     public void updateUserAddress(UserContact user) {
-        String sql = "Update USERS set Address = :address Where uid = :uid";
-        namedParameterJdbcTemplate.update(sql, getUserContactMap(user));
+        namedParameterJdbcTemplate.update(UPDATE_USERS_ADDRESS_UID, getUserContactMap(user));
     }
 
     public void updateUserMobileNo(UserContact user) {
-        String sql = "Update USERS set MobileNo = :mobileNo Where uid = :uid";
-        namedParameterJdbcTemplate.update(sql, getUserContactMap(user));
+        namedParameterJdbcTemplate.update(UPDATE_USERS_MOBILENO_UID, getUserContactMap(user));
     }
 
     public void updateUserName(UserContact user) {
-        String sql = "Update USERS set Name = :name Where uid = :uid";
-        namedParameterJdbcTemplate.update(sql, getUserContactMap(user));
+        namedParameterJdbcTemplate.update(UPDATE_USERS_NAME_UID, getUserContactMap(user));
     }
 
     public void updateUserEmail(UserContact user) {
-        String sql = "Update USERS set email = :email Where uid = :uid";
-        namedParameterJdbcTemplate.update(sql, getUserContactMap(user));
+        namedParameterJdbcTemplate.update(UPDATE_USERS_EMAIL_UID, getUserContactMap(user));
     }
 }

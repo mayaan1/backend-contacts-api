@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static com.flock.spring_test.mappers.Mappers.*;
 import static com.flock.spring_test.mappers.UserLoginCredMapper.USER_RM;
+import static com.flock.spring_test.repository.sqlConstants.UserLoginCred.*;
 
 @Repository
 public class UserLoginRepo {
@@ -21,15 +22,13 @@ public class UserLoginRepo {
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<UserLoginCred> getAllUsers() {
-        return namedParameterJdbcTemplate.query("SELECT * FROM UserLoginCred", USER_RM);
+        return namedParameterJdbcTemplate.query(SELECT_USERLOGIN, USER_RM);
     }
 
     public UserLoginCred addUser(UserLoginCred user, UserContact userContact) {
-        String sql = "Insert into UserLoginCred (username,password,token) Values(:username,:password,:token)";
         try {
-            namedParameterJdbcTemplate.update(sql, getUserLoginCredMap(user));
-            String userCreate = "Insert into Users (uid) Values(:uid)";
-            namedParameterJdbcTemplate.update(userCreate, getUserContactMap(userContact));
+            namedParameterJdbcTemplate.update(INSERT_INTO_USERLOGIN, getUserLoginCredMap(user));
+            namedParameterJdbcTemplate.update(INSERT_USERLOGIN_UID, getUserContactMap(userContact));
         } catch (Exception ex) {
             System.out.println("Duplicate Key!");
         }
@@ -37,9 +36,8 @@ public class UserLoginRepo {
     }
 
     public UserLoginCred deleteUser(UserLoginCred user ) {
-        String sql = "Delete from UserLoginCred where username=:username and password=:password";
         try {
-            namedParameterJdbcTemplate.update(sql, getUserLoginCredMap(user));
+            namedParameterJdbcTemplate.update(DELETE_USERLOGIN_USERNAME_PASSWORD, getUserLoginCredMap(user));
         } catch (Exception ex) {
             System.out.println("No user found");
         }
@@ -47,22 +45,18 @@ public class UserLoginRepo {
     }
 
     public UserLoginCred getUserToken(UserLoginCred user) {
-        String sql = "SELECT * FROM UserLoginCred Where username = :username and password = :password";
-        return namedParameterJdbcTemplate.queryForObject(sql, getUserLoginCredMap(user), USER_RM);
+        return namedParameterJdbcTemplate.queryForObject(SELECT_USERLOGIN_USERNAME_PASSWORD, getUserLoginCredMap(user), USER_RM);
     }
 
     public String getPasswordForUsername(String username) {
-        String sql = "SELECT * FROM UserLoginCred Where username = :username";
-        return namedParameterJdbcTemplate.queryForObject(sql, getUserUsernameMap(username), USER_RM).getPassword();
+        return namedParameterJdbcTemplate.queryForObject(SELECT_USERLOGIN_USERNAME, getUserUsernameMap(username), USER_RM).getPassword();
     }
 
     public boolean isTokenPresent(String token) {
-        String sql = "SELECT count(*) FROM UserLoginCred WHERE token = :token";
-        return namedParameterJdbcTemplate.queryForObject(sql, getUserTokenMap(token), Integer.class) == 1;
+        return namedParameterJdbcTemplate.queryForObject(SELECT_COUNT_USERLOGIN_TOKEN, getUserTokenMap(token), Integer.class) == 1;
     }
 
     public String getUsernameFromToken(String token) {
-        String sql = "SELECT * FROM UserLoginCred Where token = :token";
-        return namedParameterJdbcTemplate.queryForObject(sql,getUserTokenMap(token),USER_RM).getUsername();
+        return namedParameterJdbcTemplate.queryForObject(SELECT_USERLOGIN_TOKEN,getUserTokenMap(token),USER_RM).getUsername();
     }
 }

@@ -1,10 +1,10 @@
 package com.flock.spring_test.model;
 
 public class Contacts {
-    String uid;
-    String contactUID;
-    String contactName;
-    Integer score;
+    private String uid;
+    private String contactUID;
+    private String contactName;
+    private Integer score;
 
     public Contacts() {
 
