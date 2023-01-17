@@ -7,7 +7,7 @@ public class UserContact {
         String email;
         String name;
 
-        UserContact() {
+        public UserContact() {
 
         }
 

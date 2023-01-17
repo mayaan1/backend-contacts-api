@@ -1,5 +1,6 @@
 package com.flock.spring_test.service;
 
+import com.flock.spring_test.model.UserContact;
 import com.flock.spring_test.model.UserLoginCred;
 import com.flock.spring_test.repository.UserLoginRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,10 @@ public class UserLoginService {
     }
 
     public UserLoginCred addUser(UserLoginCred user) {
-        return userLoginRepo.addUser(user);
+        user.setToken(user.generateToken());
+        UserContact userContact = new UserContact();
+        userContact.setUid(user.getUsername());
+        return userLoginRepo.addUser(user, userContact);
     }
 
     public UserLoginCred deleteUser(UserLoginCred user ) {
@@ -33,10 +37,6 @@ public class UserLoginService {
 
     public UserLoginCred getUserToken(UserLoginCred user) {
         return userLoginRepo.getUserToken(user);
-    }
-
-    public String getUserToken(String username, String password) {
-        return userLoginRepo.getUserToken(username, password).getToken();
     }
 
     public String getPasswordForUsername(String username) {

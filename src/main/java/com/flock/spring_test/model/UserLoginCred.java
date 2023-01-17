@@ -1,5 +1,7 @@
 package com.flock.spring_test.model;
 
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+
 import java.util.UUID;
 
 public class UserLoginCred {
@@ -28,12 +30,12 @@ public class UserLoginCred {
         this.username = username;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public String getUsername() {
         return username;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getPassword() {
