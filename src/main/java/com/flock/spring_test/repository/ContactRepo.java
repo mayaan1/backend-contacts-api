@@ -4,18 +4,23 @@ import com.flock.spring_test.model.Contacts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.NavigableMap;
+
+import static com.flock.spring_test.mappers.Mappers.*;
 
 @Repository
 public class ContactRepo {
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     public Contacts addContact(Contacts contact) {
-        String sql = "Insert into Contacts (uid,contactUid,contactName,score) Values(?,?,?,?)";
+        String sql = "Insert into Contacts (uid,contactUID,contactName,score) Values(:uid,:contactUID,:contactName,:score)";
         try {
-            jdbcTemplate.update(sql, contact.getUid(),contact.getContactUID(), contact.getContactName(), contact.getScore());
+            namedParameterJdbcTemplate.update(sql, getContactMap(contact));
         } catch (DuplicateKeyException ex){
             System.out.println("Duplicate Key!");
         }
@@ -23,69 +28,33 @@ public class ContactRepo {
     }
 
     public List<Contacts> showAllContacts(String uid) {
-        return jdbcTemplate.query("SELECT * FROM contacts where uid = ?", (rs, rowNum) ->
-                new Contacts(
-                        rs.getString("uid"),
-                        rs.getString("contactUid"),
-                        rs.getString("contactName"),
-                        rs.getInt("score")
-                ), uid);
+        String sql = "SELECT * FROM contacts where uid = :uid";
+        return namedParameterJdbcTemplate.query(sql, getUidMap(uid), CONTACT_RM);
     }
 
     public List<Contacts> showContactsForUID(Contacts contact) {
-        String sql = "SELECT * FROM contacts where UID = ?";
-
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new Contacts(
-                        rs.getString("uid"),
-                        rs.getString("contactUid"),
-                        rs.getString("contactName"),
-                        rs.getInt("score")
-                ), contact.getUid());
+        String sql = "SELECT * FROM contacts where UID = :uid";
+        return namedParameterJdbcTemplate.query(sql, getContactMap(contact), CONTACT_RM);
     }
 
-    public List<Contacts> lookUp(String lookUpText, String Uid) {
-        String sql = "SELECT * FROM contacts where UID = ? and contactName like ? order by score";
+    public List<Contacts> lookUp(String lookUpText, String uid) {
+        String sql = "SELECT * FROM contacts where UID = :uid and contactName like :contactName order by score desc";
         if(lookUpText == null ) {
-            sql = "SELECT * FROM contacts where UID = ?";
-            return jdbcTemplate.query(sql, (rs, rowNum) ->
-                    new Contacts(
-                            rs.getString("uid"),
-                            rs.getString("contactUid"),
-                            rs.getString("contactName"),
-                            rs.getInt("score")
-                    ), Uid);
+            sql = "SELECT * FROM contacts where UID = :uid order by score desc";
+            return namedParameterJdbcTemplate.query(sql, getUidMap(uid), CONTACT_RM);
         }
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new Contacts(
-                        rs.getString("uid"),
-                        rs.getString("contactUid"),
-                        rs.getString("contactName"),
-                        rs.getInt("score")
-                ), Uid, lookUpText + "%");
+        return namedParameterJdbcTemplate.query(sql, getUidLookUpMap(uid, lookUpText), CONTACT_RM);
     }
 
-    public Contacts viewSingleContact(String contactUID, String Uid) {
-        String sql = "SELECT * FROM contacts where UID = ? and contactUID = ?";
-        jdbcTemplate.update("Update contacts set score = score + 1 where UID = ? and contactUID = ?", Uid, contactUID);
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                new Contacts(
-                        rs.getString("uid"),
-                        rs.getString("contactUid"),
-                        rs.getString("contactName"),
-                        rs.getInt("score")
-                ), Uid, contactUID);
+    public Contacts viewSingleContact(Contacts contact) {
+        String sql = "SELECT * FROM contacts where UID = :uid and contactUID = :contactUID";
+        String updateSql = "Update contacts set score = score + 1 where UID = :uid and contactUID = :contactUID";
+        namedParameterJdbcTemplate.update(updateSql, getContactMap(contact));
+        return namedParameterJdbcTemplate.queryForObject(sql, getContactMap(contact), CONTACT_RM);
     }
 
     public List<Contacts> showAllContactsByScore(String uid) {
-        String sql = "SELECT * FROM contacts where UID = ? order by score desc, contactName";
-
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
-                new Contacts(
-                        rs.getString("uid"),
-                        rs.getString("contactUid"),
-                        rs.getString("contactName"),
-                        rs.getInt("score")
-                ), uid);
+        String sql = "SELECT * FROM contacts where UID = :uid order by score desc, contactName";
+        return namedParameterJdbcTemplate.query(sql, getUidMap(uid), CONTACT_RM);
     }
 }

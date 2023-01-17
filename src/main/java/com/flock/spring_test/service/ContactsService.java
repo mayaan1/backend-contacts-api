@@ -27,8 +27,8 @@ public class ContactsService {
         return contactRepo.lookUp(lookUpText, Uid);
     }
 
-    public Contacts viewSingleContact(String contactUID, String Uid) {
-        return contactRepo.viewSingleContact(contactUID, Uid);
+    public Contacts viewSingleContact(Contacts contact) {
+        return contactRepo.viewSingleContact(contact);
     }
 
     public List<Contacts> showAllContactsByScore(String uid) {

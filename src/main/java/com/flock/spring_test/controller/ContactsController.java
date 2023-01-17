@@ -61,7 +61,8 @@ public class ContactsController {
                          @RequestHeader Map<String,String> header) {
         String username = header.get("username");
         if( username == null ) username = userLoginService.getUsernameFromToken(param.get("token"));
-
-        return contactsService.viewSingleContact(param.get("contactUID"), username);
+        Contacts contact = new Contacts();
+        contact.setUid(username); contact.setContactUID(param.get("contactUID"));
+        return contactsService.viewSingleContact(contact);
     }
 }

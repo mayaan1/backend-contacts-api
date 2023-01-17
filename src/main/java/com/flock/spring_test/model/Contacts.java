@@ -9,7 +9,6 @@ public class Contacts {
     public Contacts() {
 
     }
-
     public Contacts(String uid, String contactUID, String contactName, Integer score) {
         this.uid = uid;
         this.contactUID = contactUID;
