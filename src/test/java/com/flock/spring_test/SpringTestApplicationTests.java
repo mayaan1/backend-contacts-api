@@ -1,5 +1,6 @@
 package com.flock.spring_test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flock.spring_test.model.UserLoginCred;
 import com.flock.spring_test.repository.UserLoginRepo;
 import com.flock.spring_test.service.UserLoginService;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,6 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class SpringTestApplicationTests {
-	@Autowired
 	private UserLoginService userLoginService;
 	@MockBean
 	private UserLoginRepo userLoginRepo;

@@ -13,8 +13,6 @@ import java.util.List;
 @RestController
 public class UserLoginController {
     @Autowired
-    JdbcTemplate jdbcTemplate;
-    @Autowired
     UserLoginService userLogin;
 
     @GetMapping({"/getAllUserCred"})

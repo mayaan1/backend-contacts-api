@@ -10,6 +10,10 @@ public class UserContact {
     public UserContact() {
 
     }
+    public UserContact(String uid) {
+        this.uid = uid;
+    }
+
 
     public UserContact(String uid, String mobileNo, String address, String email, String name ) {
         this.uid = uid;
