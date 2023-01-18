@@ -43,7 +43,9 @@ public class UserLoginTest {
     public void setup() {
         String clearUserLogin = "DELETE FROM USERLOGINCRED";
         String clearUsers = "DELETE FROM USERS";
+        String clearContacts = "DELETE FROM CONTACTS";
         jdbcTemplate.update(clearUserLogin);
+        jdbcTemplate.update(clearContacts);
         jdbcTemplate.update(clearUsers);
         mapper = new ObjectMapper();
     }
