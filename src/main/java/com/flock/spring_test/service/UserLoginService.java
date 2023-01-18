@@ -25,7 +25,7 @@ public class UserLoginService {
     }
 
     public UserLoginCred addUser(UserLoginCred user) {
-        user.setToken(user.generateToken());
+        if(user.getToken() == null ) user.setToken(user.generateToken());
         UserContact userContact = new UserContact();
         userContact.setUid(user.getUsername());
         return userLoginRepo.addUser(user, userContact);

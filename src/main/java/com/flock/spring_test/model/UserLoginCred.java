@@ -12,6 +12,11 @@ public class UserLoginCred {
     public UserLoginCred() {
     }
 
+    public UserLoginCred(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public UserLoginCred(String username, String password, String token) {
         this.username = username;
         this.password = password;

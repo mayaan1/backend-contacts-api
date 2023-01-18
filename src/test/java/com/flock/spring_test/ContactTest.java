@@ -5,7 +5,6 @@ import com.flock.spring_test.model.UserContact;
 import com.flock.spring_test.model.UserLoginCred;
 import com.flock.spring_test.repository.UserLoginRepo;
 import org.hamcrest.CoreMatchers;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AddTest {
+public class ContactTest {
     @Autowired
     private UserLoginRepo userLoginRepo;
 
@@ -48,42 +43,17 @@ public class AddTest {
     }
 
     @Test
-    public void givenUsers_whenGetAllUsers_thenListOfUsers() throws Exception {
+    public void givenContacts_whenGetAllContacts_thenListOfContacts() throws Exception {
         // given
-        UserLoginCred users = new UserLoginCred("A","A","A");
-        UserContact contact = new UserContact("A");
-        userLoginRepo.addUser(users, contact);
-        UserLoginCred users1 = new UserLoginCred("A1","A1","A1");
-        UserContact contact1 = new UserContact("A1");
-        userLoginRepo.addUser(users1, contact1);
-
-        // when
-        ResultActions res = mockMvc.perform(MockMvcRequestBuilders.get("/auth/getAllUserCred"));
-
-        // then
-        res.andExpect(MockMvcResultMatchers.status().isOk());
-        res.andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(2)));
-
-    }
-
-
-    @Test
-    public void givenUsers_whenAddUser_thenUserAdded() throws Exception {
-        // given
-        int sizeOfDb = 0;
         UserLoginCred user = new UserLoginCred("A","A","A");
         UserContact contact = new UserContact("A");
+        userLoginRepo.addUser(user, contact);
 
         // when
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/auth/add")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(user))
-                .contentType(MediaType.APPLICATION_JSON);
-        ResultActions res = mockMvc.perform(requestBuilder);
+        ResultActions res = mockMvc.perform(MockMvcRequestBuilders.get("/contact/showAll")
+                .param("token", user.getToken()));
 
         // then
         res.andExpect(MockMvcResultMatchers.status().isOk());
-        res.andExpect(MockMvcResultMatchers.jsonPath("$.username", CoreMatchers.is(user.getUsername())));
-        res.andExpect(MockMvcResultMatchers.jsonPath("$.password", CoreMatchers.is(user.getPassword())));
     }
 }
